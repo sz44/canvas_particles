@@ -14,7 +14,7 @@ class Particle {
     this.x = mouse.x;
     this.y = mouse.y;
     this.color = `hsl(${hue}, 100%, 50%)`;
-    this.size = Math.random() * 20 + 2;
+    this.size = Math.random() * 14 + 1;
     this.speedX = Math.random() * 3 - 1.5;
     this.speedY = Math.random() * 3 - 1.5;
   }
@@ -68,7 +68,8 @@ function animate() {
       let b = particleArray[j];
       if (distance(a,b) < 50) {
         ctx.beginPath();
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = a.color;
+        ctx.lineWidth = (a.size < b.size ? a.size : b.size)/5;
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         ctx.stroke();
