@@ -7,8 +7,8 @@ const particleArray = [];
 
 class Particle {
   constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
+    this.x = mouse.x;
+    this.y = mouse.y;
     this.color = `hsl(120, 100%, 100%)`;
     this.size = Math.random() * 30 + 2;
     this.speedX = Math.random() * 3 - 1.5;
@@ -18,7 +18,7 @@ class Particle {
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
-    // this.size -= 0.2;
+    this.size -= 0.2;
   }
   
   draw() {
@@ -29,10 +29,20 @@ class Particle {
   }
 }
 
+const mouse = {
+  x: null,
+  y: null
+}
+
 canvas.addEventListener("mousemove", (e) => {
+  mouse.x = e.x;
+  mouse.y = e.y;
 });
 
-createParticles(100);
+canvas.addEventListener("click", (e) => {
+  createParticles(20);
+})
+
 draw();
 
 function createParticles(n) {
@@ -42,10 +52,7 @@ function createParticles(n) {
 }
 
 function draw() {
-  // ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = "black";
-  ctx.rect(0,0,canvas.width,canvas.height);
-  // ctx.rect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   for (let j = 0; j<particleArray.length; j++) {
     particleArray[j].update();
     particleArray[j].draw();
