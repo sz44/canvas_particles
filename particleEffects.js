@@ -5,8 +5,9 @@ canvas.height = window.innerHeight;
 
 const particleArray = [];
 let hue = 0;
-let hueSpeed = 2;
-let trailOpacity = 0.10;
+let hueSpeed = 2; //increments every frame
+let trailOpacity = 0.10; //controls trail length, lower = longer
+let numberOfParticles = 5;
 
 class Particle {
   constructor() {
@@ -40,7 +41,7 @@ const mouse = {
 canvas.addEventListener("mousemove", (e) => {
   mouse.x = e.x;
   mouse.y = e.y;
-  createParticles(5);
+  createParticles(numberOfParticles);
 });
 
 canvas.addEventListener("click", (e) => {
@@ -59,14 +60,29 @@ function animate() {
   // ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle = `rgba(0,0,0,${ trailOpacity })`
   ctx.fillRect(0,0,canvas.width,canvas.height);
-  for (let j = 0; j<particleArray.length; j++) {
-    particleArray[j].update();
-    particleArray[j].draw();
-    if (particleArray[j].size < 0.2) {
-        particleArray.splice(j, 1);
-        j--;
+  for (let i = 0; i < particleArray.length; i++) {
+    particleArray[i].update();
+    particleArray[i].draw();
+    for (let j = i+1; j < particleArray.length; j++) {
+      let a = particleArray[i];
+      let b = particleArray[j];
+      if (distance(a,b) < 50) {
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+    } 
+    if (particleArray[i].size < 0.2) {
+        particleArray.splice(i, 1);
+        i--;
     }
   }
   hue += hueSpeed;
   window.requestAnimationFrame(animate);
+}
+
+function distance(a,b) {
+  return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
 }
