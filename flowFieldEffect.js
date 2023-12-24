@@ -8,13 +8,12 @@ class FlowFieldEffect {
   #width;
   #height;
   constructor(ctx, width, height) {
-    console.log("constructed");
     this.#ctx = ctx;
     this.#ctx.strokeStyle = "white";
     this.#width = width;
     this.#height = height;
-    this.x = 0;
-    this.y = 0;
+    this.xs = 0;
+    this.ys = 0;
   }
   #draw(x, y) {
     this.#ctx.beginPath();
@@ -23,10 +22,10 @@ class FlowFieldEffect {
     this.#ctx.stroke();
   }
   animate() {
-    console.log("animating");
-    this.#draw(100 + this.x, 100 + this.y);
-    this.x += 0.2;
-    this.y += 0.2; 
+    this.#ctx.clearRect(0,0,this.#width,this.#height)
+    this.#draw(100 + this.xs, 100 + this.ys);
+    this.xs += 0.5;
+    this.ys += 0.2; 
     requestAnimationFrame(this.animate.bind(this));
   }
 }
